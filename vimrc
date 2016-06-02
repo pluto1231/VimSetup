@@ -1,10 +1,9 @@
 " 定义快捷键的前缀，即<Leader>
 let mapleader=";"
 
-set clipboard=unnamedplus
 set nocompatible "不要vim模仿vi模式
 
-"make gnome terminal supports 256 colors
+" make gnome terminal supports 256 colors
 if $COLORTERM == 'gnome-terminal'
   set t_Co=256
 endif
@@ -73,8 +72,7 @@ syntax on
 " theme
 """'"""""""""
 set background=dark
-colorscheme solarized
-" colorscheme molokai
+colorscheme cake
 
 " font
 set guifont=YaHei\ Consolas\ Hybrid\ 18
@@ -93,15 +91,6 @@ set guioptions-=R
 set guioptions-=m
 set guioptions-=T
 
-" 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
-"fun! ToggleFullscreen()
-"    call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
-"endf
-" 全屏开/关快捷键
-"map <silent> <F11> :call ToggleFullscreen()<CR>
-" 启动 vim 时自动全屏
-"autocmd VimEnter * call ToggleFullscreen()
-
 """""""""""""
 " 辅助信息
 """""""""""""
@@ -109,8 +98,6 @@ set guioptions-=T
 set laststatus=2
 " 显示光标当前位置
 set ruler
-" 开启行号显示
-set number
 " 高亮显示当前行/列
 set cursorline
 set cursorcolumn
@@ -118,8 +105,8 @@ set cursorcolumn
 set hlsearch
 
 " 设置状态栏主题风格, works with vim-airline
-" let g:airline_theme='solarized'
-let g:airline_theme='molokai'
+let g:airline_theme='sol'
+" let g:airline_theme='molokai'
 
 """"""""""""""
 " indent
@@ -129,17 +116,11 @@ filetype indent on
 " 将制表符扩展为空格
 set expandtab
 " 设置编辑时制表符占用空格数
-set tabstop=4
+set tabstop=2
 " 设置格式化时制表符占用空格数
-set shiftwidth=4
+set shiftwidth=2
 " 让 vim 把连续数量的空格视为一个制表符
-set softtabstop=4
-" 随 vim 自启动
-let g:indent_guides_enable_on_vim_startup=1
-" 从第二层开始可视化显示缩进
-let g:indent_guides_start_level=2
-" 色块宽度
-let g:indent_guides_guide_size=1
+set softtabstop=2
 " 快捷键 i 开/关缩进可视化
 :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
 
@@ -147,12 +128,8 @@ let g:indent_guides_guide_size=1
 " 基于缩进或语法进行代码折叠
 """""""""""""""""""""""""""
 
-" set foldmethod=indent
-" set foldmethod=syntax
 " 启动 vim 时关闭折叠代码
 set nofoldenable
-
-set colorcolumn=80
 
 autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
 autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
@@ -164,31 +141,11 @@ autocmd FileType python setlocal foldmethod=indent
 "默认展开所有代码
 set foldlevel=99
 
-""""""""""""""""""""
-" javascript fold
-""""""""""""""""""""
-function! JavaScriptFold() 
-    setl foldmethod=syntax
-    setl foldlevelstart=1
-    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-    function! FoldText()
-        return substitute(getline(v:foldstart), '{.*', '{...}', '')
-    endfunction
-    setl foldtext=FoldText()
-endfunction
-au FileType javascript call JavaScriptFold()
-au FileType javascript setl fen
-
 """"""""""""""
 " YCM
 """"""""""""""
 
 " YCM 补全菜单配色
-" 菜单
-"highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
-" 选中项
-"highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
 " 补全功能在注释中同样有效
 let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
@@ -207,18 +164,6 @@ let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=0
 " 语法关键字补全         
 let g:ycm_seed_identifiers_with_syntax=1
-
-""""""""""""""""
-" syntastic
-""""""""""""""""
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 """"""""""""""""
 " rainbow parentheses
@@ -276,18 +221,6 @@ let g:jsdoc_input_description=1
 let g:jsdoc_additional_descriptions=1
 let g:jsdoc_underscore_private=1
 
-"""""""""""""""""""""
-" DoxygenToolkit
-"""""""""""""""""""""
-
-let g:DoxygenToolkit_briefTag_pre="@Xiang  " 
-let g:DoxygenToolkit_paramTag_pre="@Param " 
-let g:DoxygenToolkit_returnTag="@Returns   " 
-let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------" 
-let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------" 
-let g:DoxygenToolkit_authorName="Xiang Li" 
-
-
 """"""""""""""""""""
 " tagbar
 """"""""""""""""""""
@@ -304,8 +237,6 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:ycm_use_ultisnips_completer=1
 
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
 " add snippets dir
 let g:UltiSnipsSnippetDirectories=["bundle/vim-snippets/UltiSnips"]
 
@@ -314,3 +245,5 @@ let g:UltiSnipsSnippetDirectories=["bundle/vim-snippets/UltiSnips"]
 """"""""""""""""""""
 
 let g:javascript_enable_domhtmlcss=1
+
+let g:ycm_global_ycm_extra_conf = '/Users/pluto/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
